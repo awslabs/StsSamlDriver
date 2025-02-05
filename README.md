@@ -71,7 +71,7 @@ or
 ```bash
 pipx install sts_saml_driver
 ```
-
+NTe038c9UepV
 Then install jq (optional)
 
 If you want to use the provided wrapper script to set CLI environment variables, you'll need jq.
@@ -98,10 +98,10 @@ brew install jq
 ### Tips for configuring specific IDPs
 
 * PingFederate allows you to have [multiple ACS urls associated with an application, and specify which ACS url is used](https://support.pingidentity.com/s/article/Using-multiple-ACS-URLs-as-PingFederate-IdP). You can use the ACSIdx parameter to specify where the SAML assertion is sent, and have urls for direct console access, or this tool.
-* EntraID does not allow you to dynamically specify ACS urls with IdP initiated SAML. For EntraId, you can create an additional enterprise application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the EntraID application you've created for the for this tool.
-* Okta does not allow you to dynamically specify ACS urls with an IdP initiated SAML. For Okta, you can create an additional application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the Okta application you've created for the for this tool.
-* ADFS does not allow you to dynamically specify ACS urls with IdP initiated SAML. For ADFS, you can create an additional relying party trust for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this relying party trust to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the ADFS application/IDP initiated SAML url you've created for the for this tool.
-* Google Workspace does not allow you to dynamically specify ACS urls with an IdP initiated SAML. For Google Workspace, you can create an additional application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the Google Workspace application you've created for the for this tool.
+* EntraID does not allow you to dynamically specify ACS urls with IdP initiated SAML. For EntraId, you can create an additional enterprise application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the EntraID application you've created for this tool.
+* Okta does not allow you to dynamically specify ACS urls with an IdP initiated SAML. For Okta, you can create an additional application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the Okta application you've created for this tool.
+* ADFS does not allow you to dynamically specify ACS urls with IdP initiated SAML. For ADFS, you can create an additional relying party trust for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this relying party trust to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the ADFS application/IDP initiated SAML url you've created for this tool.
+* Google Workspace does not allow you to dynamically specify ACS urls with an IdP initiated SAML. For Google Workspace, you can create an additional application for SAML authentication with http://localhost:8090/saml as the ACS url, add the metadata from this application to your AWS accounts, and configure it with the IAM roles you want. Your end-user wanting to get AWS credentials for the CLI or SDK will then use the Google Workspace application you've created for this tool.
 
 ### Single application approaches for IdPs that do not support dynamic SAML ACS urls
 
