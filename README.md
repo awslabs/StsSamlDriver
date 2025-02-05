@@ -27,11 +27,11 @@ You can use this tool by updating the ACS server of your SAML IDP (or target, or
   - urllib3
 - jq
 
-## Installation on machine
+## Installation on machine from github
 
 1. Clone the repository:
 ```bash
-git clone [repository-url]
+git clone https://github.com/awslabs/StsSamlDriver.git
 ```
 
 2. install the tool
@@ -42,6 +42,10 @@ or if you prefer, pipx
 ```bash
 pipx install .
 ```
+
+## Installation from github
+
+
 
 3. install jq (optional)
 If you want to use the provided wrapper script to set CLI environment variables, you'll need jq.
@@ -55,6 +59,20 @@ yum install jq
 ```
 ```bash
 brew install jq
+```
+
+## Installation from pypi with pip
+
+This package is also hosted on pypi can be directly installed from pypi using pip.
+
+```bash
+pip3 install sts_saml_driver
+```
+
+or 
+
+```bash
+pipx install sts_saml_driver
 ```
 
 

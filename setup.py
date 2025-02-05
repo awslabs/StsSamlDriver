@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sts_saml_driver",  # Change this to your project name
-    version="1.0.1",
+    version="1.0.2",
     py_modules=["sts_saml_driver"],
     install_requires=[
         "requests",
