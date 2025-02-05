@@ -27,7 +27,7 @@ You can use this tool by updating the ACS server of your SAML IDP (or target, or
   - urllib3
 - jq
 
-## Installation on machine from github
+## Installation from github
 
 1. Clone the repository:
 ```bash
@@ -42,9 +42,6 @@ or if you prefer, pipx
 ```bash
 pipx install .
 ```
-
-## Installation from github
-
 
 
 3. install jq (optional)
@@ -73,6 +70,21 @@ or
 
 ```bash
 pipx install sts_saml_driver
+```
+
+Then install jq (optional)
+
+If you want to use the provided wrapper script to set CLI environment variables, you'll need jq.
+This may vary based on your package manager.
+Here's a few common ones to easy copy paste.
+```bash
+apt install jq
+```
+```bash
+yum install jq
+```
+```bash
+brew install jq
 ```
 
 
