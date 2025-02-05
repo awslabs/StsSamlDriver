@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="aws_saml_driver",  # Change this to your project name
+    name="sts_saml_driver",  # Change this to your project name
     version="1.0.0",
-    py_modules=["saml_driver"],
+    py_modules=["sts_saml_driver"],
     install_requires=[
         "requests",
         "bottle",
@@ -12,13 +12,13 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "stssamldriver=saml_driver:main",  
+            "stssamldriver=sts_saml_driver:main",  
         ],
     },
     author="Liam Wadman",
     author_email="liwadman@amazon.com",
     description="A utility to capture SAML assertions and use them to get AWS credentials without browser emulation",
-    url="https://github.com/yourusername/my_project",  #
+    url="https://github.com/awslabs/StsSamlDriver",  #
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

@@ -10,7 +10,7 @@ You can use this tool by updating the ACS server of your SAML IDP (or target, or
 
 ## Features
 
-- Support for AWS role assumption using SAML assertions
+- Support for AWS IAM role assumption using SAML assertions
 - Optional AWS Management Console access
 - Configurable session duration
 - targets specific region
