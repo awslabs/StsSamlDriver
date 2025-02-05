@@ -1,0 +1,4 @@
+bottle
+boto3
+requests
+urllib3
