@@ -71,7 +71,6 @@ or
 ```bash
 pipx install sts_saml_driver
 ```
-NTe038c9UepV
 Then install jq (optional)
 
 If you want to use the provided wrapper script to set CLI environment variables, you'll need jq.
