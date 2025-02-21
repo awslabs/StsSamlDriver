@@ -16,5 +16,5 @@ jobs:
           webhook-type: webhook-trigger
           payload: |
             {
-              "text": "A new \"${{ github.event_name }}\" has been opened on https://github.com/${{ github.repository }}. Please acknowledge the customer ASAP and :cowboy-ack: this request."
+              "text": "A new \"${{ github.event_name }}\" has been opened on https://github.com/${{ github.repository }} . Please acknowledge the customer ASAP and :cowboy-ack: this request."
             }
