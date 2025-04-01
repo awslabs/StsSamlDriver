@@ -42,11 +42,27 @@ def receive_saml():
         saml_response = request.forms.get('SAMLResponse')
         if not saml_response:
             response.status = 400
-            return {'error': 'No SAMLResponse found in the POST data'}
+            return """
+                <html>
+                <head><title>&#x274C; Error getting AWS credentials</title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #d13212;">Error&#x274C;</h2>
+                        <p>No SAMLResponse found in the POST data</p>
+                    </body>
+                </html>
+            """
         
         if not saml_response.strip():
             response.status = 400
-            return {'error': 'Empty SAMLResponse provided'}
+            return """
+                <html>
+                <head><title>&#x274C; Error getting AWS credentials</title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #d13212;">Error &#x274C;</h2>
+                        <p>Empty SAMLResponse provided</p>
+                    </body>
+                </html>
+            """
 
         credentials = assume_role_with_saml(
             saml_response.replace(" ", "+"), 
@@ -60,18 +76,68 @@ def receive_saml():
         if args.console:
             response.status = 302  
             response.set_header('Location', getConsoleUrl(credentials, args.region,args.issuer))
-            return "Redirecting..."
+            return f"""
+                <html>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2>Redirecting to AWS Console...</h2>
+                        <p>If you are not redirected automatically, <a href="%s">{getConsoleUrl(credentials, args.region, args.issuer)}</a></p>
+                    </body>
+                </html>
+            """ 
         
-        response.status = 200
-        response.content_type = 'text/plain'
-        return "SAML Login Complete. It is now safe to close this tab."
+        if not args.profile_to_update:
+            response.status = 200
+            response.content_type = 'text/html'
+            return f"""
+                <html>
+                    <head><title>&#x2705;Succesful request for AWS credentials </title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #16191f;">SAML Login Succesfull &#x2705;</h2>
+                        <p style="color: #444;">Your temporary AWS security credentials have been acquired.</p>
+                        <p style="color: #444;">The AssumeRoleWithSAML call was succesful and your environment variables, or application has been issued credentials.</p>
+                    </body>
+                </html>
+            """        
+        
+        if args.profile_to_update:
+            response.status = 200
+            response.content_type = 'text/html'
+            return f"""
+                <html>
+                    <head><title>&#x2705;Succesful request for AWS credentials </title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #16191f;">SAML Login Succesful &#x2705;</h2>
+                        <p style="color: #444;">Your credentials have been successfully updated in the profile <strong>{args.profile_to_update}</strong></p>
+                        <p style="color: #444;">You can add the argument <strong>--profile {args.profile_to_update}</strong> to AWS CLI commands to use these credentials</p>
+                        <p style="color: #444;">To learn how to use this profile with the AWS SDK, please read the documentation for the AWS SDK you're using.</p>
+                    </body>
+                </html>
+                """
+        
+
 
     except boto3.exceptions.botocore.exceptions.ClientError as e:
         response.status = 400
-        return {'error': f"AWS API Error: {str(e)}"}
+        return f"""
+                <html>
+                <head><title>&#x274C; Error getting AWS credentials</title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #d13212;">Error&#x274C;</h2>
+                        <p>Error returned from AWS: <strong>{e}</b></p>
+                    </body>
+                </html>
+            """
     except Exception as e:
         response.status = 500
-        return {'error': f"Internal server error: {str(e)}"}
+        f"""
+                <html>
+                <head><title>&#x274C; Error getting AWS credentials</title></head>
+                    <body style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">
+                        <h2 style="color: #d13212;">Error&#x274C;</h2>
+                        <p>Error returned from AWS: <strong>{e}</b></p>
+                    </body>
+                </html>
+            """
     
 
 def assume_role_with_saml(saml_assertion, role_arn, principal_arn, region,profile,path):
@@ -87,7 +153,7 @@ def assume_role_with_saml(saml_assertion, role_arn, principal_arn, region,profil
         
         response['Credentials']['Expiration'] = response['Credentials']['Expiration'].isoformat()
         response['Credentials']['Version'] = 1
-        if (profile == "noprofile"):
+        if profile:
             print(json.dumps(response['Credentials']))
         else:
             config = configparser.ConfigParser()
@@ -176,7 +242,7 @@ def main():
     parser.add_argument('--duration-seconds', type=int, default=3600,
                       help='seconds to assume role for (3600 default)')
     parser.add_argument('--console', action='store_true', help='Open a console session as well if set')
-    parser.add_argument('--profile-to-update', type=str, default="noprofile", help='the name of the AWS profile to update when')
+    parser.add_argument('--profile-to-update', type=str, default=False, help='the name of the AWS profile to update when')
     parser.add_argument('--path', type=str, default="~/.aws/config", help='path to aws config file you want updated. used with profile')
     parser.add_argument('--issuer', type=str, default='https://console.aws.amazon.com', help='The URL of your IDP. Your browser will be opened to this.')
     
@@ -192,7 +258,7 @@ def main():
         parser.error("Issuer must start with https://")
 
     try:
-        if args.profile_to_update != "noprofile":
+        if args.profile_to_update:
             print("Waiting for SAML assertion....")
         server_adapter = SingleShotServerAdapter(host='localhost', port=8090, quiet=True)
         run(server=server_adapter, quiet=True)
