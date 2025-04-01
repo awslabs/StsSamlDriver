@@ -153,7 +153,7 @@ def assume_role_with_saml(saml_assertion, role_arn, principal_arn, region,profil
         
         response['Credentials']['Expiration'] = response['Credentials']['Expiration'].isoformat()
         response['Credentials']['Version'] = 1
-        if profile:
+        if not profile:
             print(json.dumps(response['Credentials']))
         else:
             config = configparser.ConfigParser()
@@ -243,7 +243,7 @@ def main():
                       help='seconds to assume role for (3600 default)')
     parser.add_argument('--console', action='store_true', help='Open a console session as well if set')
     parser.add_argument('--profile-to-update', type=str, default=False, help='the name of the AWS profile to update when')
-    parser.add_argument('--path', type=str, default="~/.aws/config", help='path to aws config file you want updated. used with profile')
+    parser.add_argument('--path', type=str, default="~/.aws/credentials", help='path to aws credentials file you want updated. used with profile')
     parser.add_argument('--issuer', type=str, default='https://console.aws.amazon.com', help='The URL of your IDP. Your browser will be opened to this.')
     
     

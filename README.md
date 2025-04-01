@@ -126,7 +126,7 @@ Optional Parameters:
 * `--region`: AWS Region to use (default: us-east-1)
 * `--duration-seconds`: Duration in seconds for the assumed role session (default: 3600)
 * `--profile-to-update`: Name of the AWS profile to update
-* `--path`: Path to AWS config file to update (default: "~/.aws/config")
+* `--path`: Path to AWS config file to update (default: "~/.aws/credentials")
 * `--console`: Flag to open an AWS Management Console session
 * `--issuer`: Relevant URL from your IDP that will kick off SAML federation to AWS. The tool will open the default system browser to this URL. issuer may be something like your okta tenant, or deep links to SAML federation flows from your IDP.
 
@@ -164,7 +164,7 @@ Please note the script assumes it's running in the same directory where the venv
 
 ### As a credential process
 
-You'll need to a create a profile in `~/.aws/config`, or wherever your application reads it's aws configuration from like so:
+You'll need to a create a profile in `~/.aws/credentials`, or wherever your application reads it's aws configuration from like so:
 
 ```
 [profile samlexample]
@@ -193,9 +193,9 @@ Credential process is typically not recommended with the AWS CLI, as it will cal
 you can specify the flags `--profile-to-update` and optionally `--path` to update an aws configuration profile.
 
 ```bash
-/path/to/samldriver --region your-aws-region --role-arn arn:aws:iam::111122223333:role/your-iam-role --saml-provider-arn arn:aws:iam::11112222333:saml-provider/your-iam-saml-idp --profile-to-update saml --path ~/.aws/config
+/path/to/samldriver --region your-aws-region --role-arn arn:aws:iam::111122223333:role/your-iam-role --saml-provider-arn arn:aws:iam::11112222333:saml-provider/your-iam-saml-idp --profile-to-update saml --path ~/.aws/credentials
 ```
 
-This will update the "saml" profile in ~/.aws/config (the default location).  Then the aws cli can be invoked with "--profile-to-update saml" to use that profile. AWS SDKs can [reference the saml profile](https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html) using the relevant approaches for each language.
+This will update the "saml" profile in ~/.aws/credentials (the default location).  Then the aws cli can be invoked with "--profile-to-update saml" to use that profile. AWS SDKs can [reference the saml profile](https://docs.aws.amazon.com/sdkref/latest/guide/feature-static-credentials.html) using the relevant approaches for each language.
 
 After you run samldriver, perform your saml login. The script will wait until a SAML assertion is received on http://localhost:8090.
